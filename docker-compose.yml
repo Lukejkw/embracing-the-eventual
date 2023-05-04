@@ -7,13 +7,29 @@ services:
     ports:
       - '8001:80'
       - '9001:443'
-  order:
+    environment:
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: development
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: 'Development'
+      ConnectionStrings__MongoDb: 'mongodb://root:localpassword@mongo:27017'
+    volumes:
+      - '~/.aspnet/https:/https:ro'
+  orders:
     build:
-      dockerfile: ./Order/Dockerfile
+      dockerfile: ./Orders/Dockerfile
       context: ./backend
     ports:
       - '8002:80'
       - '9002:443'
+    environment:
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: development
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: 'Development'
+      ConnectionStrings__MongoDb: 'mongodb://root:localpassword@mongo:27017'
+    volumes:
+      - '~/.aspnet/https:/https:ro'
   shipping:
     build:
       dockerfile: ./Shipping/Dockerfile
@@ -21,6 +37,14 @@ services:
     ports:
       - '8003:80'
       - '9003:443'
+    environment:
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: development
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: 'Development'
+      ConnectionStrings__MongoDb: 'mongodb://root:localpassword@mongo:27017'
+    volumes:
+      - '~/.aspnet/https:/https:ro'
 
   # Message broker
   rabbitmq:
@@ -49,32 +73,6 @@ services:
       - 27017:27017
     volumes:
       - 'mongodb_volume:/bitnami'
-  # TODO:
-  # SPA
-   
-  # Backend Services
-  # bff:
-  #   build:
-  #     dockerfile: ./BFF/Dockerfile
-  #     context: ./backend
-  #   ports:
-  #     - '8000:80'
-  #     - '9000:443'
-  # Identity Provider for the application
-  # keycloak:
-  #   image: quay.io/keycloak/keycloak:20.0.3
-  #   container_name: keycloak
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     KEYCLOAK_ADMIN: admin
-  #     KEYCLOAK_ADMIN_PASSWORD: admin
-  #     KC_DB: dev-mem
-  #   command: start-dev
-  #   healthcheck:
-  #     test: "curl -f http://localhost:8080/admin || exit 1"
-  #   volumes:
-  #     - '/opt/keycloak/data:key_cloak_data'
 volumes:
   mongodb_volume:
     driver: local

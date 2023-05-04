@@ -30,6 +30,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Cart.Contracts\Cart.Contracts.csproj" />
       <ProjectReference Include="..\Order.Contracts\Order.Contracts.csproj" />
+      <ProjectReference Include="..\Shipping.Contracts\Shipping.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

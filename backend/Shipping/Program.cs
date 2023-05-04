@@ -20,8 +20,7 @@ builder.Services.AddSingleton(mongo);
 builder.Services.AddMassTransit(options =>
 {
     options.SetKebabCaseEndpointNameFormatter();
-    options.AddMongoDbOutbox();
-    
+
     // Automatically register sagas and consumers
     options.AddSagasFromNamespaceContaining<ShippingAssemblyReference>();
     options.SetMongoDbSagaRepositoryProvider(mongoRepoOptions =>

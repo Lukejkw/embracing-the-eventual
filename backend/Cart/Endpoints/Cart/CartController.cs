@@ -36,20 +36,24 @@ public class CartController : ControllerBase
     public async Task<ActionResult> Create(
         [FromBody] CreateCartRequest body)
     {
-        var items = body.Items.Select(i => new CartItem(i.Sku, i.Name, i.Quantity)).ToList();
+        var items = body.Items
+            .Select(
+                i => new CartItem(i.Sku, i.Name, i.Quantity))
+            .ToList();
 
         var filter = Builders<CustomerCart>.Filter.Where(c => c.UserId == body.UserId);
         var existingCart = await collection
             .Find(filter)
             .FirstOrDefaultAsync();
-
-        if (existingCart is null)
+        var cart = new CustomerCart(
+            Guid.NewGuid(), 
+            body.UserId, 
+            items, 
+            DateTime.UtcNow);
+        
+        if (existingCart is null)   
         {
-            var cart = new CustomerCart(
-                Guid.NewGuid(), 
-                body.UserId, 
-                items, 
-                DateTime.UtcNow);
+            
             await collection.InsertOneAsync(
                 cart,
                 new InsertOneOptions());
@@ -59,10 +63,11 @@ public class CartController : ControllerBase
             return Created(cart.Id.ToString(), cart.Id.ToString());
         }
 
-        existingCart.Update(items, DateTime.UtcNow);
-
-        await collection.ReplaceOneAsync(Builders<CustomerCart>.Filter.Where(c => c.Id == existingCart.Id), existingCart);
-        return Ok(existingCart.Id.ToString());
+        // For demo purposes
+        await collection.DeleteOneAsync(Builders<CustomerCart>.Filter.Where(c => c.Id == existingCart.Id));
+        
+        await collection.InsertOneAsync(cart);
+        return Ok(cart.Id.ToString());
     }
 
     [HttpPatch]

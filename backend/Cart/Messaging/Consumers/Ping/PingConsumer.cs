@@ -23,7 +23,7 @@ public class PingConsumer : IConsumer<PingCommand>
                 "Failed to processed {CommandName} with message: {Message}", 
                 nameof(PingCommand), 
                 command.Message);
-            throw new ShootInFootException();
+            //throw new ShootInFootException();
         }
         
         logger.LogInformation(

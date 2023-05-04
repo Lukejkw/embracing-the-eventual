@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using Orders.Models;
 
 namespace Orders.Controllers;
 
@@ -20,10 +19,10 @@ public class OrderController : Controller
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [HttpGet]
     public async Task<ActionResult<List<Models.Order>>> Get(CancellationToken cancellationToken)
     {
-        // Obviously, this is a minimal example missing DTOs, abstraction etc 
-        
+        // Obviously, this is a minimal example missing DTOs, abstraction etc
         var orders = await mongoClient
             .GetDatabase("order")
             .GetCollection<Models.Order>("orders")

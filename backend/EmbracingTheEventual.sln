@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cart", "Cart", "{091F5540-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart.Contracts", "Cart.Contracts\Cart.Contracts.csproj", "{919E24CB-4742-40F1-864E-7FA386934676}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{84FC90D1-F16F-4B15-8E1B-22E5A48F03F9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{84FC90D1-F16F-4B15-8E1B-22E5A48F03F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Contracts", "Order.Contracts\Order.Contracts.csproj", "{A8DF9BEA-21F9-4834-B362-37EAB179B560}"
 EndProject

@@ -1,6 +1,8 @@
 using Cart.Contracts;
 using MassTransit;
 using Order.Contracts;
+using Shipping.Contracts;
+using Shipping.Contracts.Commands;
 
 namespace Cart.Messaging.Sagas;
 
@@ -52,7 +54,7 @@ public class CheckoutSaga : ISaga,
         return Task.CompletedTask;
     }
 
-    public Task Consume(ConsumeContext<OrderPlaced> context)
+    public async Task Consume(ConsumeContext<OrderPlaced> context)
     {
         logger.LogInformation(
             "Order placed for cart {CartId}. Shipping order {OrderId}",
@@ -61,8 +63,8 @@ public class CheckoutSaga : ISaga,
 
         OrderCreatedOn = DateTime.UtcNow;
 
-        // TODO: Send ship command
-
-        return Task.CompletedTask;
+        var command = new ShipItemsCommand(context.Message.CartId);
+        var endpoint = await context.GetSendEndpoint(new Uri($"queue:{ShippingQueueEndpoints.ShipItems}"));
+        await endpoint.Send(command);
     }
 }
