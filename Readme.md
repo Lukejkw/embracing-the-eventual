@@ -6,9 +6,15 @@ This repository contains the code example from my talk "Embracing the Eventual".
 
 ## Get Started
 
+### Backend Services
+
 Start the backend up with `docker-compose up`
 
 > Pass the `-d` or `--build` flags to start up in the background and/or rebuild images respectively
+
+### SPA
+
+There is a simple Single Page Application which can be used to trigger the demo. Start it up using vite dev mode by running `npm run dev`
 
 ## Contributing
 
