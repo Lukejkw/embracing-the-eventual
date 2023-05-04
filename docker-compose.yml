@@ -1,0 +1,84 @@
+version: '3.9'
+services:
+  cart:
+    build:
+      dockerfile: ./Cart/Dockerfile
+      context: ./backend
+    ports:
+      - '8001:80'
+      - '9001:443'
+  order:
+    build:
+      dockerfile: ./Order/Dockerfile
+      context: ./backend
+    ports:
+      - '8002:80'
+      - '9002:443'
+  shipping:
+    build:
+      dockerfile: ./Shipping/Dockerfile
+      context: ./backend
+    ports:
+      - '8003:80'
+      - '9003:443'
+
+  # Message broker
+  rabbitmq:
+    build: rabbitmq
+    volumes:
+      - rabbitmq_etc:/etc/rabbitmq/
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_logs:/var/log/rabbitmq/
+    ports:
+      - 5672:5672 # amqp endpoint
+      - 15672:15672 # admin portal
+
+  # Mongo DB for persistance
+  mongo:
+    image: 'bitnami/mongodb:latest'
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: mongo
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_ROOT_PASSWORD: localpassword
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: localpassword
+      # MONGO_INITDB_DATABASE: my-service
+      MONGO_REPLICA_SET_NAME: rs0
+    ports:
+      - 27017:27017
+    volumes:
+      - 'mongodb_volume:/bitnami'
+  # TODO:
+  # SPA
+   
+  # Backend Services
+  # bff:
+  #   build:
+  #     dockerfile: ./BFF/Dockerfile
+  #     context: ./backend
+  #   ports:
+  #     - '8000:80'
+  #     - '9000:443'
+  # Identity Provider for the application
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:20.0.3
+  #   container_name: keycloak
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: admin
+  #     KC_DB: dev-mem
+  #   command: start-dev
+  #   healthcheck:
+  #     test: "curl -f http://localhost:8080/admin || exit 1"
+  #   volumes:
+  #     - '/opt/keycloak/data:key_cloak_data'
+volumes:
+  mongodb_volume:
+    driver: local
+  rabbitmq_etc:
+  rabbitmq_data:
+  rabbitmq_logs:
+  key_cloak_data:

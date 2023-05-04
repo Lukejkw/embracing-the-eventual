@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="8.0.15" />
+        <PackageReference Include="MassTransit.MongoDb" Version="8.0.15" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.15" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Cart.Contracts\obj\Cart.Contracts.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Cart.Contracts\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Cart.Contracts\obj\project.packagespec.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Cart.Contracts\Cart.Contracts.csproj" />
+      <ProjectReference Include="..\Order.Contracts\Order.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Messaging" />
+    </ItemGroup>
+
+</Project>
